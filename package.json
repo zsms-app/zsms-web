@@ -6,7 +6,8 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prepare": "husky"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.3",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.2.8",
+    "husky": "^9.1.6",
     "prettier": "^3.3.3",
     "supabase": "^1.192.5"
   }
