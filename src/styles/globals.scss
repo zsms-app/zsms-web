@@ -1,3 +1,5 @@
+@import "~bulma/bulma";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -40,3 +42,9 @@ a {
     color-scheme: dark;
   }
 }
+
+.field:not(:last-child),
+.notification {
+  margin-bottom: var(--bulma-block-spacing);
+}
+
