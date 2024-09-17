@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           npm ci
-          npm run export
+          npm run build
           touch out/.nojekyll
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://gxtooxtkkcpblccexeyl.supabase.co
