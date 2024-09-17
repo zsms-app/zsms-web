@@ -72,7 +72,7 @@ export default function Home() {
 
   useEffect(() => {
    if (devices.length && !selectedDevice) {
-      setSelectedDevice(devices.id)
+      setSelectedDevice(devices[0].id)
     }
   }, [devices, selectedDevice])
 
