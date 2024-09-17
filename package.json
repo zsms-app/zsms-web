@@ -1,13 +1,12 @@
-  {
+{
   "name": "zsms-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
-    "start": "next start",
     "lint": "next lint",
-    "supabase:start": "supabase start"
+    "start": "next start"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.3",
@@ -21,6 +20,7 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.2.8",
+    "prettier": "^3.3.3",
     "supabase": "^1.192.5"
   }
 }
