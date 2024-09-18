@@ -100,7 +100,7 @@ export default function Home() {
         body: JSON.stringify({
           deviceId: selectedDevice,
           message,
-          phoneNumber,
+          phoneNumber: phoneNumber.replace(/[^(0-9)]/g, ""),
         }),
       },
     );
