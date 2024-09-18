@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
@@ -285,9 +286,16 @@ export default function Home() {
     <>
       <section className="section">
         <div className="container">
-          <h1 className="title">zSMS</h1>
+          <h1 className="title">
+            <Link href="/">zSMS</Link>{" "}
+          </h1>
           <p className="subtitle">
             Envoyez des SMS simplement depuis votre ordinateur !
+          </p>
+          <p>
+            <Link className="is-underlined" href="/a-propos">
+              En savoir plus
+            </Link>
           </p>
         </div>
       </section>
