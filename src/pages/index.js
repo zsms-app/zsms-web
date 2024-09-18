@@ -111,11 +111,47 @@ export default function Home() {
   const basicStartButton = () => (
     <section className="section">
       <div className="container">
-        <div className="field is-grouped">
-          <div className="control">
-            <button className="button is-primary" onClick={() => createUser()}>
-              Commencer
-            </button>
+        <div class="notification is-info">
+          <div class="content">
+            <p>
+              Pour le moment, <strong>zSMS est en test</strong>. Pour y accéder
+              vous devez{" "}
+              <a href="mailto:contact@zsms.fr?subject=Test%20zSMS%20-%20Compte%20Google%20Play">
+                nous indiquer à contact@zsms.fr
+              </a>{" "}
+              l'adresse email que vous utilisez sur Google Play. Si vous avez un
+              téléphone Android mais que vous ne passez pas par Google Play,
+              vous pouvez{" "}
+              <a href="mailto:contact@zsms.fr?subject=Test%20zSMS">
+                nous écrire
+              </a>
+              , nous vous mettrons l'application à disposition.
+            </p>
+            <p>
+              <ol type="1">
+                <li>
+                  Installer l'application sur le téléphone à partir duquel vous
+                  voulez que les SMS soient envoyés.
+                </li>
+                <li>Associer votre téléphone à ce site internet.</li>
+                <li>Envoyer votre premier SMS depuis votre ordinateur !</li>
+              </ol>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div class="content">
+          <div className="field is-grouped">
+            <div className="control">
+              <button
+                className="button is-primary"
+                onClick={() => createUser()}
+              >
+                Commencer
+              </button>
+            </div>
           </div>
         </div>
       </div>
