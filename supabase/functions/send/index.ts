@@ -28,25 +28,31 @@ Deno.serve(async (req) => {
     { global: { headers: { Authorization: authHeader } } },
   );
 
-  const { deviceId, phoneNumber, message } = await req.json();
-  const { data, error } = await supabaseClient
-    .from("devices")
-    .select("*")
-    .eq("id", deviceId);
-  if (error) {
-    return new Response(JSON.stringify({ error }), {
+  const { phoneNumber, message } = await req.json();
+  const pairingResult = await supabaseClient.from("pairings").select("*");
+  if (pairingResult.error) {
+    return new Response(JSON.stringify({ error: pairingResult.error }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
-  const token = data[0].token;
+  const serviceSupabaseClient = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+  );
+  const tokenResult = await serviceSupabaseClient
+    .from("fcm_tokens")
+    .select("*")
+    .eq("id", pairingResult.data[0].fcm_token_id);
+
+  const token = tokenResult.data[0].token;
   const result = await messaging.send({
     data: { dest: phoneNumber, message },
     token,
     android: {
       priority: "high",
     },
-  }); //*/
+  });
 
   return new Response(JSON.stringify({ result }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
