@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
     headers: {
       ...corsHeaders,
       "Content-Type": "text/plain",
-      location: "https://zsms.fr/m",
+      location: "https://zsms.fr/mobile",
     },
     status: 302,
   });
