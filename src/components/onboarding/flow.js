@@ -4,6 +4,7 @@ import { SMSForm } from "../sms-form.js";
 export function OnboardingFlow({ supabase, onOnboardingFinished }) {
   const [installed, setInstalled] = useState(false);
   const [paired, setPaired] = useState(false);
+  const [pairingAttempt, setPairingAttempt] = useState();
   const [firstSMSSent, setFirstSMSSent] = useState(false);
   const [onboardingFinished, setOnboardingFinished] = useState(false);
   const [pairingSecret, setPairingSecret] = useState("");
@@ -54,10 +55,15 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
       },
     );
     const content = await response.json();
+    if (!content.pairingResult) {
+      setPairingAttempt(pairingSecret);
+      return;
+    }
     if (!content.pairingResult.error) {
       setPairingSecret("");
       setPaired(true);
       updateUser({ paired: true });
+      setPairingAttempt();
     } else {
       console.log(content);
     }
@@ -119,17 +125,27 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
                 <div className="control">
                   <input
                     id="identifiant"
-                    className="input"
+                    className={`input ${pairingAttempt ? "is-danger" : ""}`}
                     type="text"
                     value={pairingSecret}
                     placeholder="fruit-fruit-nombre"
                     onChange={(e) => setPairingSecret(e.target.value)}
                   />
                 </div>
+                {pairingAttempt ? (
+                  <p class="help is-danger">
+                    Aucun identifiant n'a été trouvé pour "{pairingAttempt}".
+                  </p>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="field is-grouped">
                 <div className="control">
-                  <button className="button is-primary" onClick={() => pair()}>
+                  <button
+                    className="button is-primary"
+                    onClick={() => pair(setPairingAttempt)}
+                  >
                     Associer
                   </button>
                 </div>

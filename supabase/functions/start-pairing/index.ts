@@ -30,10 +30,16 @@ Deno.serve(async (req) => {
   const fcmTokenResult = await supabaseClient.from("fcm_tokens").select();
   const secretResult = await serviceSupabaseClient
     .from("pairing_secrets")
-    .insert({ fcm_token_id: fcmTokenResult.data[0].id, secret });
+    .insert({
+      fcm_token_id: fcmTokenResult.data[0].id,
+      secret,
+      phone_user_id: user.id,
+    })
+    .select();
 
+  const secretRecord = secretResult.data[0];
   return new Response(
-    JSON.stringify({ user, secret, fcmTokenResult, secretResult }),
+    JSON.stringify({ id: secretRecord.id, secret: secretRecord.secret }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     },

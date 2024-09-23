@@ -28,6 +28,12 @@ Deno.serve(async (req) => {
     .select()
     .eq("secret", secret);
 
+  if (!secretResult.data.length) {
+    return new Response(JSON.stringify({ user, secretResult }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const pairingResult = await supabaseClient
     .from("pairings")
     .insert({
