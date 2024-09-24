@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { send } from "@/lib/send.js";
 
 export function SMSForm({ supabase, onSent }) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -7,23 +8,10 @@ export function SMSForm({ supabase, onSent }) {
 
   async function sendMessage() {
     setSending(true);
-    const { data, error } = await supabase.auth.getSession();
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send`,
-      {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${data.session.access_token}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          message,
-          phoneNumber: phoneNumber.replace(/[^(0-9)]/g, ""),
-        }),
-      },
-    );
+    const response = await send(supabase, message, phoneNumber);
     setSending(false);
+    setMessage("");
+    setPhoneNumber("");
     if (onSent) {
       onSent(response);
     }
