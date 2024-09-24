@@ -7,70 +7,7 @@ import { Notification } from "../components/onboarding/notification.js";
 import { MockPhone } from "../components/onboarding/mock-phone.js";
 import { SMSForm } from "../components/sms-form.js";
 import { Debug } from "../components/debug.js";
-
-function SignedInView({ supabase, onLogout, children }) {
-  const [showLogoutDetails, setShowLogoutDetails] = useState(false);
-
-  async function logoutUser() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error(error);
-    }
-    if (onLogout) {
-      onLogout();
-    }
-
-    setShowLogoutDetails(false);
-  }
-
-  return (
-    <>
-      {children}
-      <section className="section">
-        <div className="container">
-          <div className="content">
-            <div className="field is-grouped">
-              <div className="control">
-                <button
-                  className="button is-warning"
-                  onClick={() => setShowLogoutDetails(!showLogoutDetails)}
-                >
-                  Se déconnecter
-                </button>
-              </div>
-            </div>
-            {showLogoutDetails && (
-              <>
-                <div class="notification">
-                  En vous déconnectant,{" "}
-                  <b>toutes les informations seront supprimées</b> de votre
-                  navigateur. Il faudra <b>configurer à nouveau</b> un téléphone
-                  pour envoyer des SMS.
-                </div>
-
-                <div className="field is-grouped">
-                  <div className="control">
-                    <button className="button" onClick={() => logoutUser()}>
-                      Confirmer la déconnexion
-                    </button>
-                  </div>
-                  <div className="control">
-                    <button
-                      className="button is-danger"
-                      onClick={() => setShowLogoutDetails(!showLogoutDetails)}
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
+import { LoggedInView } from "../components/logged-in-view.js";
 
 export default function Home() {
   const [supabase, setSupabase] = useState();
@@ -147,7 +84,7 @@ export default function Home() {
           </div>
         </section>
       ) : (
-        <SignedInView supabase={supabase} onLogout={onLogout}>
+        <LoggedInView supabase={supabase} onLogout={onLogout}>
           {user?.user_metadata.onboardingFinished ? (
             <section className="section">
               <div className="container">
@@ -168,7 +105,7 @@ export default function Home() {
               </Debug>
             </>
           )}
-        </SignedInView>
+        </LoggedInView>
       )}
       <Debug>{user ? <pre>{JSON.stringify(user, null, 2)}</pre> : ""}</Debug>
     </>
