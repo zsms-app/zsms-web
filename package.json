@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.3",
+    "bluebird": "^3.7.2",
     "bulma": "^1.0.2",
     "next": "14.2.8",
     "node-sass": "^9.0.0",
