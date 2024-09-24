@@ -102,7 +102,7 @@ export default function Home() {
     getUser();
   }, []);
 
-  async function onOnboardingFinished(user) {
+  function onOnboardingFinished(user) {
     setUser(user);
   }
 
