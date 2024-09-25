@@ -12,7 +12,7 @@ export default function Grist() {
   const [user, setUser] = useState();
   const [records, setRecords] = useState();
   const [sending, setSending] = useState();
-  const [sentCount, setSentCount] = useState();
+  const [sentCount, setSentCount] = useState(0);
 
   useEffect(() => {
     const supabaseClient = createClient(
