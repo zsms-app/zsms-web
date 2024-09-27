@@ -10,7 +10,7 @@ export async function send(supabase, message, phoneNumber) {
       },
       body: JSON.stringify({
         message,
-        phoneNumber: phoneNumber.replace(/[^(0-9)]/g, ""),
+        phoneNumber: phoneNumber.replace(/[^(+0-9)]/g, ""),
       }),
     },
   );
