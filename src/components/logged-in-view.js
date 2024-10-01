@@ -33,7 +33,7 @@ export function LoggedInView({ supabase, onLogout, children }) {
             </div>
             {showLogoutDetails && (
               <>
-                <div class="notification">
+                <div className="notification">
                   En vous déconnectant,{" "}
                   <b>toutes les informations seront supprimées</b> de votre
                   navigateur. Il faudra <b>configurer à nouveau</b> un téléphone

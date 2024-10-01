@@ -133,7 +133,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
                   />
                 </div>
                 {pairingAttempt ? (
-                  <p class="help is-danger">
+                  <p className="help is-danger">
                     Aucun identifiant n'a été trouvé pour "{pairingAttempt}".
                   </p>
                 ) : (

@@ -76,9 +76,9 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         <></>
       ) : (
         <>
-          <div class="field">
-            <div class="control">
-              <label class="checkbox">
+          <div className="field">
+            <div className="control">
+              <label className="checkbox">
                 <input
                   type="checkbox"
                   value={showCampaignMode}
@@ -106,8 +106,8 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
                   />
                 </div>
                 {campaign ? (
-                  <div class="control">
-                    <button class="button is-warning">Supprimer</button>
+                  <div className="control">
+                    <button className="button is-warning">Supprimer</button>
                   </div>
                 ) : (
                   <></>
