@@ -161,7 +161,11 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
           {!firstSMSSent ? (
             <>
               <p>Plutôt à vous-même pour commencer !</p>
-              <SMSForm supabase={supabase} onSent={() => checkFirstSMSSent()} />
+              <SMSForm
+                supabase={supabase}
+                onSent={() => checkFirstSMSSent()}
+                showSimpleOnly
+              />
             </>
           ) : (
             <></>

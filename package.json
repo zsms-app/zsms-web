@@ -14,6 +14,7 @@
     "@supabase/supabase-js": "^2.45.3",
     "bluebird": "^3.7.2",
     "bulma": "^1.0.2",
+    "mustache": "^4.2.0",
     "next": "14.2.8",
     "node-sass": "^9.0.0",
     "react": "^18",

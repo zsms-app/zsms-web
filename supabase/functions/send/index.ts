@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     { global: { headers: { Authorization: authHeader } } },
   );
 
-  const { phoneNumber, message } = await req.json();
+  const data = await req.json();
   const pairingResult = await supabaseClient.from("pairings").select("*");
   if (pairingResult.error) {
     return new Response(JSON.stringify({ error: pairingResult.error }), {
@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
 
   const token = tokenResult.data[0].token;
   const result = await messaging.send({
-    data: { dest: phoneNumber, message },
+    data,
     token,
     android: {
       priority: "high",

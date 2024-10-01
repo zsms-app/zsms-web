@@ -3,11 +3,12 @@ import Script from "next/script";
 import { createClient } from "@supabase/supabase-js";
 import { OnboardingFlow } from "../components/onboarding/flow.js";
 import { LoggedInView } from "../components/logged-in-view.js";
+import { createCampaign } from "@/lib/create-campaign.js";
 import { send } from "../lib/send.js";
 import bluebird from "bluebird";
+import mustache from "mustache";
 
 export default function Grist() {
-  const [mappings, setMappings] = useState();
   const [supabase, setSupabase] = useState();
   const [user, setUser] = useState();
   const [records, setRecords] = useState();
@@ -39,37 +40,42 @@ export default function Grist() {
 
     window.grist.ready({
       requiredAccess: "full",
-      columns: [
-        { name: "Numéro", type: "Text" },
-        { name: "Contenu", type: "Text" },
-        { name: "Validation", type: "DateTime" },
-      ],
     });
-    window.grist.onRecords((records, mappings) => {
+    window.grist.onRecords((records) => {
       if (!records) {
         return;
       }
-      setMappings(mappings);
       setRecords(records);
     });
   }, []);
 
   async function sendSMSs() {
-    setSending(true);
     setSentCount(0);
+    setSending(true);
+
+    let campaignId;
+    if (campaignName) {
+      var c = await createCampaign(supabase, {
+        name: campaignName,
+        size: records?.length,
+      });
+      campaignId = c.id;
+    }
+
     var table = window.grist.getTable();
     await bluebird.map(
       records,
       async (record) => {
-        const res = await send(
-          supabase,
-          record[mappings.Contenu],
-          record[mappings.Numéro],
-        );
+        const message = mustache.render(messageTemplate, record);
+        const res = await send(supabase, {
+          message,
+          phoneNumber: record.Telephone,
+          campaignId,
+        });
         await table.update({
           id: record.id,
           fields: {
-            [mappings.Validation]: new Date(),
+            SMSDate: new Date(),
           },
         });
         await new Promise((resolve) => {
@@ -90,6 +96,21 @@ export default function Grist() {
     setUser();
   }
 
+  const [showDetails, setShowDetails] = useState(false);
+
+  const [messageTemplate, setMessageTemplate] = useState("");
+  const [messageDemo, setMessageDemo] = useState("");
+  function updateTemplate(value) {
+    setMessageTemplate(value);
+    try {
+      setMessageDemo(mustache.render(value, records[0]));
+    } catch (e) {
+      setMessageDemo(value);
+    }
+  }
+
+  const [campaignName, setCampaignName] = useState("");
+
   return (
     <>
       <Script
@@ -98,61 +119,121 @@ export default function Grist() {
         async=""
       />
       {user ? (
-        <>
+        <LoggedInView supabase={supabase} onLogout={onLogout}>
           {user.user_metadata.onboardingFinished ? (
-            <LoggedInView supabase={supabase} onLogout={onLogout}>
-              <section className="section">
-                <div className="container">
-                  <div className="field is-grouped">
-                    <div className="control">
-                      <button
-                        disabled={sending}
-                        className="button"
-                        onClick={() => sendSMSs()}
-                      >
-                        Envoyer {records?.length} SMS
-                      </button>
-                    </div>
+            <section className="section">
+              <div className="container">
+                <div className="field">
+                  <label htmlFor="template" className="label">
+                    Template du message
+                  </label>
+                  <div className="control">
+                    <textarea
+                      className="textarea"
+                      id="template"
+                      rows="5"
+                      value={messageTemplate}
+                      onChange={(e) => updateTemplate(e.target.value)}
+                    />
                   </div>
-
-                  <progress
-                    className="field progress"
-                    value={sentCount}
-                    max={records?.length}
-                  >
-                    {sentCount}/{records?.length}
-                  </progress>
-                  {records?.length ? (
+                </div>
+                {records?.length ? (
+                  <div className="field">
+                    <label className="label">Prévisualisation</label>
                     <div className="card">
                       <header className="card-header">
                         <p className="card-header-title">
-                          SMS au {records[0][mappings.Numéro]} (1/
+                          SMS au {records[0].Telephone} (1/
                           {records.length})
                         </p>
                       </header>
-                      <div className="card-content">
-                        <pre className="content">
-                          {records[0][mappings.Contenu]}
-                        </pre>
-                      </div>
+                      <pre className="card-content">{messageDemo}</pre>
                       <footer className="card-footer">
                         <p className="card-footer-item"></p>
                         <p className="card-footer-item"></p>
                       </footer>
                     </div>
-                  ) : (
-                    <></>
-                  )}
+                  </div>
+                ) : (
+                  <></>
+                )}
+
+                <div className="field">
+                  <label htmlFor="campaign" className="label">
+                    Nom de la campagne d'envoi
+                  </label>
+                  <div className="control">
+                    <input
+                      id="campaign"
+                      className="input"
+                      value={campaignName}
+                      onChange={(e) => setCampaignName(e.target.value)}
+                    />
+                  </div>
+                  <p className="help">
+                    Une campagne permet de regrouper les messages.
+                  </p>
                 </div>
-              </section>
-            </LoggedInView>
+
+                <div className="field">
+                  <div className="control">
+                    <button
+                      disabled={sending}
+                      className="button"
+                      onClick={() => sendSMSs()}
+                    >
+                      Envoyer {records?.length} SMS
+                    </button>
+                  </div>
+                </div>
+
+                <progress
+                  className="field progress"
+                  value={sentCount}
+                  max={records?.length}
+                >
+                  {sentCount}/{records?.length}
+                </progress>
+
+                <div className="field">
+                  <div className="card">
+                    <button
+                      className="card-header"
+                      onClick={() => setShowDetails(!showDetails)}
+                    >
+                      <div className="card-header-title">Données brutes</div>
+                      <div className="card-header-icon">
+                        <span className="icon">
+                          <i aria-hidden="true">+/-</i>
+                        </span>
+                      </div>
+                    </button>
+                    {showDetails ? (
+                      <>
+                        <pre className="card-content">
+                          {records?.length
+                            ? JSON.stringify(records[0], null, 2)
+                            : ""}
+                        </pre>
+                        <footer className="card-footer">
+                          <p className="card-footer-item"></p>
+                          <p className="card-footer-item"></p>
+                        </footer>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </section>
           ) : (
             <OnboardingFlow
               supabase={supabase}
               onOnboardingFinished={onOnboardingFinished}
             />
           )}
-        </>
+        </LoggedInView>
       ) : (
         <></>
       )}

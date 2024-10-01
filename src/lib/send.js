@@ -1,4 +1,4 @@
-export async function send(supabase, message, phoneNumber) {
+export async function send(supabase, { message, phoneNumber, campaignId }) {
   const { data, error } = await supabase.auth.getSession();
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send`,
@@ -9,6 +9,7 @@ export async function send(supabase, message, phoneNumber) {
         "content-type": "application/json",
       },
       body: JSON.stringify({
+        campaignId,
         message,
         phoneNumber: phoneNumber.replace(/[^(+0-9)]/g, ""),
       }),
