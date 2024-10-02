@@ -117,7 +117,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
             Associez ce site internet à votre téléphone !{paired ? " ✅" : ""}
           </h2>
           {!paired ? (
-            <>
+            <form>
               <div className="field">
                 <label htmlFor="identifiant" className="label">
                   Identifiant
@@ -144,7 +144,10 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
                 <div className="control">
                   <button
                     className="button is-primary"
-                    onClick={() => pair(setPairingAttempt)}
+                    onClick={(e) => {
+                      pair();
+                      e.preventDefault();
+                    }}
                   >
                     Associer
                   </button>
@@ -153,7 +156,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
                   <button className="button">J'ai des difficultés</button>
                 </div>
               </div>
-            </>
+            </form>
           ) : (
             <></>
           )}
