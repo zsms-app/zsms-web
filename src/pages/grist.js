@@ -41,6 +41,12 @@ export default function Grist() {
     window.grist.ready({
       requiredAccess: "full",
     });
+
+    async function getSavedTemplate() {
+      updateTemplate((await grist.getOption("messageTemplate")) || "");
+    }
+    getSavedTemplate();
+
     window.grist.onRecords((records) => {
       if (!records) {
         return;
@@ -67,14 +73,16 @@ export default function Grist() {
       records,
       async (record) => {
         const message = mustache.render(messageTemplate, record);
-        const res = await send(supabase, {
+        const response = await send(supabase, {
           message,
           phoneNumber: record.Telephone,
           campaignId,
         });
+        const { result } = await response.json();
         await table.update({
           id: record.id,
           fields: {
+            SMSId: result,
             SMSDate: new Date(),
           },
         });
@@ -100,13 +108,18 @@ export default function Grist() {
 
   const [messageTemplate, setMessageTemplate] = useState("");
   const [messageDemo, setMessageDemo] = useState("");
+
+  useEffect(() => {
+    try {
+      setMessageDemo(mustache.render(messageTemplate, records[0]));
+    } catch (e) {
+      setMessageDemo(messageTemplate);
+    }
+  }, [messageTemplate, records]);
+
   function updateTemplate(value) {
     setMessageTemplate(value);
-    try {
-      setMessageDemo(mustache.render(value, records[0]));
-    } catch (e) {
-      setMessageDemo(value);
-    }
+    grist.setOption("messageTemplate", value);
   }
 
   const [campaignName, setCampaignName] = useState("");
@@ -235,7 +248,7 @@ export default function Grist() {
           )}
         </LoggedInView>
       ) : (
-        <></>
+        <>Il faut rafraîchir la page.</>
       )}
     </>
   );
