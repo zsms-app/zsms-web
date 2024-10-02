@@ -15,7 +15,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
   async function sendMessage() {
     setSending(true);
     let response;
-    if (showCampaignMode) {
+    if (showCampaignMode && campaignName) {
       if (campaign) {
         response = await send(supabase, {
           message,
@@ -107,7 +107,13 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
                 </div>
                 {campaign ? (
                   <div className="control">
-                    <button className="button is-warning">Supprimer</button>
+                    <button
+                      type="button"
+                      className="button is-warning"
+                      onClick={() => setCampaign()}
+                    >
+                      Supprimer
+                    </button>
                   </div>
                 ) : (
                   <></>
