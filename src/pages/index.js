@@ -86,14 +86,31 @@ export default function Home() {
       ) : (
         <LoggedInView supabase={supabase} onLogout={onLogout}>
           {user?.user_metadata.onboardingFinished ? (
-            <section className="section">
-              <div className="container">
-                <div className="content">
-                  <h2>Envoyer un SMS</h2>
-                  <SMSForm supabase={supabase} />
+            <>
+              <section className="section">
+                <div className="container">
+                  <div className="content">
+                    <h2>Envoyer un SMS</h2>
+                    <SMSForm supabase={supabase} />
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+              <section className="section">
+                <div className="container">
+                  <div className="content">
+                    <h2>Envoyer le même SMS à plusieurs personnes</h2>
+                    <p>
+                      C'est vraiment facile à faire à partir de la liste des
+                      numéros et{" "}
+                      <Link className="is-underlined" href="/campagne">
+                        c'est par ici
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </>
           ) : (
             <>
               <OnboardingFlow
