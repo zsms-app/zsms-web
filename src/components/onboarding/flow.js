@@ -91,7 +91,10 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
               <p>
                 Scannez ce QR code pour installer zSMS :
                 <br />
-                <img src="qrcode-zsms.fr.gif" alt="QR code vers m.zsms.fr" />
+                <img
+                  src="qrcode-http-m-zsms.fr.gif"
+                  alt="QR code vers m.zsms.fr"
+                />
                 <br />
                 Vous pouvez aussi accéder aux instructions d'installation en
                 allant sur <strong>m.zsms.fr</strong> depuis votre téléphone.

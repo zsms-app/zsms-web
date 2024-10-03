@@ -10,6 +10,7 @@ import mustache from "mustache";
 
 export default function Grist() {
   const [supabase, setSupabase] = useState();
+  const [starting, setStarting] = useState(true);
   const [user, setUser] = useState();
   const [records, setRecords] = useState();
   const [sending, setSending] = useState();
@@ -54,6 +55,12 @@ export default function Grist() {
       setRecords(records);
     });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setStarting(false);
+    }
+  }, [user]);
 
   async function sendSMSs() {
     setSentCount(0);
@@ -247,6 +254,8 @@ export default function Grist() {
             />
           )}
         </LoggedInView>
+      ) : starting ? (
+        <>Chargement en cours…</>
       ) : (
         <>Il faut rafraîchir la page.</>
       )}
