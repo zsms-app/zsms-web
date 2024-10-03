@@ -127,7 +127,9 @@ export default function Grist() {
           <h1 className="title">
             <Link href="/">zSMS</Link>{" "}
           </h1>
-          <h2>Envoi du même SMS à plusieurs numéros de téléphone</h2>
+          <h2 className="subtitle">
+            Envoi du même SMS à plusieurs numéros de téléphone
+          </h2>
         </div>
       </section>
       {user ? (
