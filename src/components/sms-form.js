@@ -63,10 +63,10 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
           Message
         </label>
         <div className="control">
-          <input
+          <textarea
+            className="textarea"
             id="message"
-            className="input"
-            type="text"
+            rows="5"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
