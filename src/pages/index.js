@@ -2,26 +2,17 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-import { OnboardingFlow } from "../components/onboarding/flow.js";
-import { Notification } from "../components/onboarding/notification.js";
-import { MockPhone } from "../components/onboarding/mock-phone.js";
-import { SMSForm } from "../components/sms-form.js";
-import { Debug } from "../components/debug.js";
-import { LoggedInView } from "../components/logged-in-view.js";
+import { Header } from "@/components/header.js";
+import { OnboardingFlow } from "@/components/onboarding/flow.js";
+import { Notification } from "@/components/onboarding/notification.js";
+import { MockPhone } from "@/components/onboarding/mock-phone.js";
+import { SMSForm } from "@/components/sms-form.js";
+import { Debug } from "@/components/debug.js";
+import { LoggedInView } from "@/components/logged-in-view.js";
 
 export default function Home() {
   const [supabase, setSupabase] = useState();
-
   const [user, setUser] = useState();
-  const [token, setToken] = useState("");
-
-  async function createUser() {
-    const { data, error } = await supabase.auth.signInAnonymously({
-      options: { data: { source: "web" } },
-    });
-    setUser(data?.session?.user);
-  }
-
   useEffect(() => {
     const supabaseClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -39,92 +30,82 @@ export default function Home() {
     getUser();
   }, []);
 
-  function onOnboardingFinished(user) {
-    setUser(user);
-  }
-
-  function onLogout() {
-    setUser();
-  }
-
   return (
     <>
+      <Header />
       <section className="section">
         <div className="container">
-          <h1 className="title">
-            <Link href="/">zSMS</Link>{" "}
-          </h1>
-          <p className="subtitle">
-            Envoyez des SMS simplement depuis votre ordinateur !
-          </p>
-          <p>
-            <Link className="is-underlined" href="/a-propos">
-              En savoir plus
-            </Link>
-          </p>
+          <p></p>
         </div>
       </section>
-      {!user ? (
-        <section className="section">
-          <Notification />
-
-          <div className="container">
-            <div className="content">
-              <div className="field is-grouped">
-                <div className="control">
-                  <button
-                    className="button is-primary"
-                    onClick={() => createUser()}
+      <section className="section">
+        <div className="container">
+          <Link
+            className="button is-primary is-underlined"
+            href="/espace-personnel"
+          >
+            Tester zSMS ! 🎉
+          </Link>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                <h2>Campagnes de SMS</h2>
+                <p></p>
+                <p>
+                  <Link
+                    className="is-underlined"
+                    href="/presentation#campagne"
+                    aria
                   >
-                    Commencer
-                  </button>
-                </div>
+                    En savoir plus
+                  </Link>
+                </p>
               </div>
             </div>
           </div>
-        </section>
-      ) : (
-        <LoggedInView supabase={supabase} onLogout={onLogout}>
-          {user?.user_metadata.onboardingFinished ? (
-            <>
-              <section className="section">
-                <div className="container">
-                  <div className="content">
-                    <h2>Envoyer un SMS</h2>
-                    <SMSForm supabase={supabase} />
-                  </div>
-                </div>
-              </section>
-              <section className="section">
-                <div className="container">
-                  <div className="content">
-                    <h2>Envoyer le même SMS à plusieurs personnes</h2>
-                    <p>
-                      C'est vraiment facile à faire à partir de la liste des
-                      numéros et{" "}
-                      <Link className="is-underlined" href="/campagne">
-                        c'est par ici
-                      </Link>
-                      .
-                    </p>
-                  </div>
-                </div>
-              </section>
-            </>
-          ) : (
-            <>
-              <OnboardingFlow
-                supabase={supabase}
-                onOnboardingFinished={onOnboardingFinished}
-              />
-              <Debug>
-                <MockPhone supabase={supabase} />
-              </Debug>
-            </>
-          )}
-        </LoggedInView>
-      )}
-      <Debug>{user ? <pre>{JSON.stringify(user, null, 2)}</pre> : ""}</Debug>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                <h2>Personnalisation de SMS</h2>
+                <p></p>
+                <p>
+                  <Link
+                    className="is-underlined"
+                    href="/presentation#personnalisation"
+                  >
+                    En savoir plus
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                <h2>Pas de changement pour vous !</h2>
+                <p></p>
+                <p>
+                  <Link className="is-underlined" href="/presentation#suivi">
+                    En savoir plus
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

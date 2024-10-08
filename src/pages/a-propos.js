@@ -1,18 +1,10 @@
 import Link from "next/link";
+import { Header } from "@/components/header.js";
 
 export default function APropos() {
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <h1 className="title">
-            <Link href="/">zSMS</Link>{" "}
-          </h1>
-          <p className="subtitle">
-            Envoyez des SMS simplement depuis votre ordinateur !
-          </p>
-        </div>
-      </section>
+      <Header />
       <section className="section">
         <div className="container">
           <h2 className="title">À propos</h2>
@@ -20,7 +12,7 @@ export default function APropos() {
             zSMS est né d'un besoin personnel d'envoyer des SMS depuis un
             ordinateur plutôt que depuis un téléphone portable. Principalement
             utilisateur de Signal, quelques ami.es restent sur des applications
-            de GAFA et pour échanger avec eux je passe pas des SMS.
+            de GAFA et pour échanger avec eux je passe par des SMS.
           </p>
         </div>
       </section>

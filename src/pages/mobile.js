@@ -1,18 +1,10 @@
 import Link from "next/link";
+import { Header } from "@/components/header.js";
 
 export default function Mobile() {
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <h1 className="title">
-            <Link href="/">zSMS</Link>{" "}
-          </h1>
-          <p className="subtitle">
-            Envoyez des SMS simplement depuis votre ordinateur !
-          </p>
-        </div>
-      </section>
+      <Header />
       <section className="section logos">
         <div className="container">
           <p>
