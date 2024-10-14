@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { createCampaign } from "@/lib/create-campaign.js";
+import { cleanPhoneNumber } from "@/lib/clean-phone-number.js";
 import { send } from "@/lib/send.js";
 
 export function SMSForm({ supabase, onSent, showSimpleOnly }) {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberInput, setPhoneNumberInput] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState();
 
   const [showCampaignMode, setShowCampaignMode] = useState(false);
   const [campaignName, setCampaignName] = useState("Cool campagne");
@@ -13,9 +15,18 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
   const [sending, setSending] = useState(false);
 
   async function sendMessage() {
+    const phoneNumber = cleanPhoneNumber(phoneNumberInput);
     if (!message) {
+      setError("Le message à envoyer ne doit pas être vide.");
       return;
     }
+    if (!phoneNumber) {
+      setError(
+        "Le numéro de téléphone ne semble pas valide, seuls les nombres et le symbole + sont acceptés.",
+      );
+      return;
+    }
+    setError();
     setSending(true);
     let response;
     if (showCampaignMode && campaignName) {
@@ -56,8 +67,8 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
             id="phone"
             className="input"
             type="phone"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={phoneNumberInput}
+            onChange={(e) => setPhoneNumberInput(e.target.value)}
           />
         </div>
       </div>
@@ -134,6 +145,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         </>
       )}
       <div className="field">
+        {error ? <p class="help is-danger">{error}</p> : <></>}
         <div className="control">
           <button
             className="button is-link"

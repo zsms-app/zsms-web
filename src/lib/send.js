@@ -1,3 +1,5 @@
+import { cleanPhoneNumber } from "@/lib/clean-phone-number.js";
+
 export async function send(supabase, { message, phoneNumber, campaignId }) {
   const { data, error } = await supabase.auth.getSession();
   const response = await fetch(
@@ -11,7 +13,7 @@ export async function send(supabase, { message, phoneNumber, campaignId }) {
       body: JSON.stringify({
         campaignId,
         message,
-        phoneNumber: phoneNumber.replace(/[^(+0-9)]/g, ""),
+        phoneNumber: cleanPhoneNumber(phoneNumber),
       }),
     },
   );
