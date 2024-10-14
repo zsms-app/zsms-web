@@ -8,8 +8,9 @@ export function MessageInputControl({ value, onChange, onCtrlEnter }) {
     return (
       <p className="help">
         <div className="messageSegments">
-          {v.segments.map((segment) => (
+          {v.segments.map((segment, i) => (
             <progress
+              key={i}
               className="progress"
               value={segment.sizeInBits()}
               max={maxBitsInSegment}
