@@ -13,6 +13,9 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
   const [sending, setSending] = useState(false);
 
   async function sendMessage() {
+    if (!message) {
+      return;
+    }
     setSending(true);
     let response;
     if (showCampaignMode && campaignName) {
@@ -69,6 +72,11 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
             rows="5"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.ctrlKey && e.keyCode == 13) {
+                sendMessage();
+              }
+            }}
           />
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useState } from "react";
 export function MockPhone(props) {
   const [token, setToken] = useState("");
   const [pairingSecret, setPairingSecret] = useState();
-  const [secretDetails, setSecretDetails] = useState();
+  const [secretId, setSecretId] = useState();
 
   async function saveToken() {
     const { data, error } = await props.supabase.auth.getSession();
@@ -34,12 +34,12 @@ export function MockPhone(props) {
     );
     const content = await response.json();
     setPairingSecret(content.secret);
-    setSecretDetails(content.secretResult);
+    setSecretId(content.id);
   }
 
   async function stopPairing() {
     const { data, error } = await props.supabase.auth.getSession();
-    const response = await fetch(
+    await fetch(
       `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/stop-pairing`,
       {
         method: "POST",
@@ -48,11 +48,12 @@ export function MockPhone(props) {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          secret_id: secretDetails.data[0].id,
+          secret_id: secretId,
         }),
       },
     );
-    const content = await response.json();
+    setPairingSecret();
+    setSecretId();
   }
 
   return (

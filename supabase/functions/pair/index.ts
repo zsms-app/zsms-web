@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { getUser } from "../_shared/get-user.ts";
+import { messaging } from "../_shared/messaging.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 import { words } from "../_shared/words.ts";
 
@@ -41,6 +42,22 @@ Deno.serve(async (req) => {
       fcm_token_id: secretResult.data[0].fcm_token_id,
     })
     .select();
+
+  const tokenResult = await serviceSupabaseClient
+    .from("fcm_tokens")
+    .select("*")
+    .eq("id", pairingResult.data[0].fcm_token_id);
+  const token = tokenResult.data[0].token;
+  const result = await messaging.send({
+    data: {
+      type: "event",
+      name: "paired",
+    },
+    token,
+    android: {
+      priority: "high",
+    },
+  });
 
   return new Response(JSON.stringify({ user, pairingResult, secretResult }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },

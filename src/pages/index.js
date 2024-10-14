@@ -40,11 +40,8 @@ export default function Home() {
       </section>
       <section className="section">
         <div className="container">
-          <Link
-            className="button is-primary is-underlined"
-            href="/espace-personnel"
-          >
-            Tester zSMS ! 🎉
+          <Link className="button is-primary" href="/espace-personnel">
+            {user ? "Accéder à l'espace connecté" : "Tester zSMS ! 🎉"}
           </Link>
         </div>
       </section>

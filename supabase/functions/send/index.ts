@@ -1,20 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { initializeApp, cert } from "npm:firebase-admin/app";
-import { getMessaging, AndroidConfig } from "npm:firebase-admin/messaging";
-
 import { createClient } from "jsr:@supabase/supabase-js@2";
-
 import { corsHeaders } from "../_shared/cors.ts";
-
-const app = initializeApp({
-  credential: cert({
-    project_id: Deno.env.get("GOOGLE_APPLICATION_PROJECT_ID"),
-    clientEmail: Deno.env.get("GOOGLE_APPLICATION_CLIENT_EMAIL"),
-    privateKey: Deno.env.get("GOOGLE_APPLICATION_PRIVATE_KEY"),
-  }),
-  databaseURL: `https://${Deno.env.get("GOOGLE_APPLICATION_DATABASE")}.firebaseio.com`,
-});
-const messaging = getMessaging();
+import { messaging } from "../_shared/messaging.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -47,7 +34,10 @@ Deno.serve(async (req) => {
 
   const token = tokenResult.data[0].token;
   const result = await messaging.send({
-    data,
+    data: {
+      ...data,
+      type: "message",
+    },
     token,
     android: {
       priority: "high",
