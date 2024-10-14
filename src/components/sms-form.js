@@ -145,7 +145,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         </>
       )}
       <div className="field">
-        {error ? <p class="help is-danger">{error}</p> : <></>}
+        {error ? <p className="help is-danger">{error}</p> : <></>}
         <div className="control">
           <button
             className="button is-link"
