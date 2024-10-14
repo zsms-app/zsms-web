@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createCampaign } from "@/lib/create-campaign.js";
 import { cleanPhoneNumber } from "@/lib/clean-phone-number.js";
+import { MessageInputControl } from "./message-input-control.js";
 import { send } from "@/lib/send.js";
 
 export function SMSForm({ supabase, onSent, showSimpleOnly }) {
@@ -76,20 +77,11 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         <label htmlFor="message" className="label">
           Message
         </label>
-        <div className="control">
-          <textarea
-            className="textarea"
-            id="message"
-            rows="5"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyUp={(e) => {
-              if (e.ctrlKey && e.keyCode == 13) {
-                sendMessage();
-              }
-            }}
-          />
-        </div>
+        <MessageInputControl
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onCtrlEnter={(e) => sendMessage()}
+        />
       </div>
       {showSimpleOnly ? (
         <></>

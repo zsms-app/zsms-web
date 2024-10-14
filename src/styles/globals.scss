@@ -65,3 +65,15 @@ button.card-header {
 textarea {
   rows: 30;
 }
+
+.messageSegments {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 0.2em;
+}
+
+.messageSegments progress {
+  max-width: 19%;
+  height: 1em;
+  margin: 3px;
+}

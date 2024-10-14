@@ -3,6 +3,7 @@ import Script from "next/script";
 import { createClient } from "@supabase/supabase-js";
 import { OnboardingFlow } from "../components/onboarding/flow.js";
 import { LoggedInView } from "../components/logged-in-view.js";
+import { MessageInputControl } from "../components/message-input-control.js";
 import { createCampaign } from "@/lib/create-campaign.js";
 import { send } from "../lib/send.js";
 import bluebird from "bluebird";
@@ -147,15 +148,10 @@ export default function Grist() {
                   <label htmlFor="template" className="label">
                     Template du message
                   </label>
-                  <div className="control">
-                    <textarea
-                      className="textarea"
-                      id="template"
-                      rows="5"
-                      value={messageTemplate}
-                      onChange={(e) => updateTemplate(e.target.value)}
-                    />
-                  </div>
+                  <MessageInputControl
+                    value={messageTemplate}
+                    onChange={(e) => updateTemplate(e.target.value)}
+                  />
                 </div>
                 {records?.length ? (
                   <div className="field">

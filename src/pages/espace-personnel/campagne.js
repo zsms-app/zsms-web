@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { OnboardingFlow } from "@/components/onboarding/flow.js";
 import { LoggedInView } from "@/components/logged-in-view.js";
+import { MessageInputControl } from "@/components/message-input-control.js";
 import { createCampaign } from "@/lib/create-campaign.js";
 import { send } from "@/lib/send.js";
 import bluebird from "bluebird";
@@ -160,15 +161,10 @@ export default function Campagne() {
                       <label htmlFor="template" className="label">
                         Message
                       </label>
-                      <div className="control">
-                        <textarea
-                          className="textarea"
-                          id="template"
-                          rows="5"
-                          value={messageTemplate}
-                          onChange={(e) => updateTemplate(e.target.value)}
-                        />
-                      </div>
+                      <MessageInputControl
+                        value={messageTemplate}
+                        onChange={(e) => updateTemplate(e.target.value)}
+                      />
                     </div>
                   </div>
                 </div>
