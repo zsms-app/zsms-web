@@ -50,7 +50,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
     }
     setSending(false);
     setMessage("");
-    setPhoneNumber("");
+    setPhoneNumberInput("");
     if (onSent) {
       onSent(await response.json());
     }
