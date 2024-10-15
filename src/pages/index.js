@@ -47,17 +47,13 @@ export default function Home() {
       </section>
       <section className="section">
         <div className="container">
-          <div class="card">
-            <div class="card-content">
-              <div class="content">
+          <div className="card">
+            <div className="card-content">
+              <div className="content">
                 <h2>Campagnes de SMS</h2>
                 <p></p>
                 <p>
-                  <Link
-                    className="is-underlined"
-                    href="/presentation#campagne"
-                    aria
-                  >
+                  <Link className="is-underlined" href="/presentation#campagne">
                     En savoir plus
                   </Link>
                 </p>
@@ -68,9 +64,9 @@ export default function Home() {
       </section>
       <section className="section">
         <div className="container">
-          <div class="card">
-            <div class="card-content">
-              <div class="content">
+          <div className="card">
+            <div className="card-content">
+              <div className="content">
                 <h2>Personnalisation de SMS</h2>
                 <p></p>
                 <p>
@@ -88,9 +84,9 @@ export default function Home() {
       </section>
       <section className="section">
         <div className="container">
-          <div class="card">
-            <div class="card-content">
-              <div class="content">
+          <div className="card">
+            <div className="card-content">
+              <div className="content">
                 <h2>Pas de changement pour vous !</h2>
                 <p></p>
                 <p>

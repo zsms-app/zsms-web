@@ -138,8 +138,8 @@ export default function Campagne() {
           {user.user_metadata.onboardingFinished ? (
             <section className="section">
               <div className="container">
-                <div class="columns">
-                  <div class="column">
+                <div className="columns">
+                  <div className="column">
                     <div className="field">
                       <label htmlFor="phoneList" className="label">
                         Liste des numéros de téléphone
@@ -156,7 +156,7 @@ export default function Campagne() {
                       <p className="help">Un numéro de téléphone par ligne</p>
                     </div>
                   </div>
-                  <div class="column">
+                  <div className="column">
                     <div className="field">
                       <label htmlFor="template" className="label">
                         Message
