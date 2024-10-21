@@ -45,8 +45,6 @@ Deno.serve(async (req) => {
     })
     .select();
 
-  console.log(campaignResult);
-
   return new Response(JSON.stringify(campaignResult.data[0]), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
