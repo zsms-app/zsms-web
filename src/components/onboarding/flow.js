@@ -4,6 +4,7 @@ import { SMSForm } from "../sms-form.js";
 export function OnboardingFlow({ supabase, onOnboardingFinished }) {
   const [installed, setInstalled] = useState(false);
   const [paired, setPaired] = useState(false);
+  const [pairing, setPairing] = useState(false);
   const [pairingAttempt, setPairingAttempt] = useState();
   const [firstSMSSent, setFirstSMSSent] = useState(false);
   const [onboardingFinished, setOnboardingFinished] = useState(false);
@@ -40,6 +41,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
   }
 
   async function pair() {
+    setPairing(true);
     const { data, error } = await supabase.auth.getSession();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/pair`,
@@ -67,6 +69,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
     } else {
       console.log(content);
     }
+    setPairing(false);
   }
 
   function checkFirstSMSSent() {
@@ -147,6 +150,7 @@ export function OnboardingFlow({ supabase, onOnboardingFinished }) {
                 <div className="control">
                   <button
                     className="button is-primary"
+                    disabled={pairing}
                     onClick={(e) => {
                       pair();
                       e.preventDefault();
