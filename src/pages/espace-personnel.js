@@ -68,7 +68,9 @@ export default function EspacePersonnel() {
                 <div className="container">
                   <div className="content">
                     <h2>Envoyer un SMS</h2>
-                    <SMSForm supabase={supabase} />
+                    <Link className="button" href="espace-personnel/message">
+                      C'est par ici
+                    </Link>
                   </div>
                 </div>
               </section>
@@ -78,15 +80,30 @@ export default function EspacePersonnel() {
                     <h2>Envoyer le même SMS à plusieurs personnes</h2>
                     <p>
                       C'est vraiment facile à faire à partir de la liste des
-                      numéros et{" "}
-                      <Link
-                        className="is-underlined"
-                        href="espace-personnel/campagne"
-                      >
-                        c'est par ici
-                      </Link>
-                      .
+                      numéros.
                     </p>
+                    <Link className="button" href="espace-personnel/campagne">
+                      C'est par ici
+                    </Link>
+                  </div>
+                </div>
+              </section>
+              <section className="section">
+                <div className="container">
+                  <div className="content">
+                    <h2>Envoyer un SMS personnalisé à plusieurs personnes</h2>
+                    <p>
+                      C'est vraiment facile aussi et il y a une démonstration
+                      disponible avec Grist.
+                    </p>
+
+                    <Link
+                      className="button"
+                      target="_blank"
+                      href="https://zsms.getgrist.com/qxDA8phQ34xj/Demonstration/p/1"
+                    >
+                      C'est par ici
+                    </Link>
                   </div>
                 </div>
               </section>

@@ -35,11 +35,23 @@ Deno.serve(async (req) => {
     .select("*")
     .eq("id", pairingResult.data[0].fcm_token_id);
 
+  const campaignResult = await supabaseClient
+    .from("campaigns")
+    .insert({
+      web_user_id: user.id,
+      phone_user_id: tokenResult.data[0].phone_user_id,
+      name: data.campaignName,
+      size: data.phoneNumbers.length,
+    })
+    .select();
+
   const token = tokenResult.data[0].token;
   const result = await messaging.send({
     data: {
       ...data,
-      type: "message",
+      phoneNumbers: data.phoneNumbers.join("\n"),
+      campaignId: campaignResult.data[0].id,
+      type: "campaign",
     },
     token,
     android: {
@@ -48,16 +60,16 @@ Deno.serve(async (req) => {
   });
 
   var msg = new SegmentedMessage(data.message);
-  const saveResult = await supabaseClient.from("messages").insert({
+  await supabaseClient.from("messages").insert({
     web_user_id: user.id,
     phone_user_id: tokenResult.data[0].phone_user_id,
-    firebase_id: `message@${result}`,
+    firebase_id: `campaign@${result}`,
     encoding_name: msg.encodingName,
     segment_count: msg.segments.length,
-    campaign_id: data.campaignId,
+    campaign_id: campaignResult.data[O].id,
   });
 
-  return new Response(JSON.stringify({ result, saveResult }), {
+  return new Response(JSON.stringify({ result }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 });

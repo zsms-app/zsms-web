@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { createClient } from "@supabase/supabase-js";
 import { OnboardingFlow } from "@/components/onboarding/flow.js";
 import { LoggedInView } from "@/components/logged-in-view.js";
 import { MessageInputControl } from "@/components/message-input-control.js";
+import { cleanPhoneNumber } from "@/lib/clean-phone-number.js";
 import { createCampaign } from "@/lib/create-campaign.js";
-import { send } from "@/lib/send.js";
+
+import { sendCampaign } from "@/lib/send-campaign.js";
 import bluebird from "bluebird";
 import mustache from "mustache";
 
@@ -15,8 +18,8 @@ export default function Campagne() {
   const [user, setUser] = useState();
   const [records, setRecords] = useState();
   const [sending, setSending] = useState();
-  const [sentCount, setSentCount] = useState(0);
   const [phoneListText, setPhoneListText] = useState(""); //Array(15).fill("").join("\n"))
+  const router = useRouter();
 
   useEffect(() => {
     const supabaseClient = createClient(
@@ -46,12 +49,10 @@ export default function Campagne() {
     setRecords(
       phoneListText
         .split("\n")
-        .filter((line) => line.length)
-        .map((phoneNumber) => {
-          return {
-            Telephone: phoneNumber,
-          };
-        }),
+        .map((value) => value.trim())
+        .filter((value) => !value.startsWith("#"))
+        .map((value) => cleanPhoneNumber(value))
+        .filter((line) => line.length),
     );
   }, [phoneListText]);
 
@@ -62,35 +63,13 @@ export default function Campagne() {
   }, [user]);
 
   async function sendSMSs() {
-    setSentCount(0);
     setSending(true);
-
-    let campaignId;
-    if (campaignName) {
-      var c = await createCampaign(supabase, {
-        name: campaignName,
-        size: records?.length,
-      });
-      campaignId = c.id;
-    }
-
-    await bluebird.map(
-      records,
-      async (record) => {
-        const message = mustache.render(messageTemplate, record);
-        const response = await send(supabase, {
-          message,
-          phoneNumber: record.Telephone,
-          campaignId,
-        });
-        const { result } = await response.json();
-        await new Promise((resolve) => {
-          setTimeout(resolve, 500 + 1000 * Math.random());
-        });
-        return setSentCount((s) => s + 1);
-      },
-      { concurrency: 3 },
-    );
+    const response = await sendCampaign(supabase, {
+      message: messageTemplate,
+      phoneNumbers: records,
+      campaignName,
+    });
+    const { result } = await response.json();
     setSending(false);
   }
 
@@ -100,6 +79,7 @@ export default function Campagne() {
 
   function onLogout() {
     setUser();
+    router.push("/");
   }
 
   const [showDetails, setShowDetails] = useState(false);
@@ -126,7 +106,7 @@ export default function Campagne() {
       <section className="section">
         <div className="container">
           <h1 className="title">
-            <Link href="/">zSMS</Link>{" "}
+            <Link href="/espace-personnel">zSMS</Link>{" "}
           </h1>
           <h2 className="subtitle">
             Envoi du même SMS à plusieurs numéros de téléphone
@@ -168,27 +148,6 @@ export default function Campagne() {
                     </div>
                   </div>
                 </div>
-                {records?.length ? (
-                  <div className="field">
-                    <label className="label">Prévisualisation</label>
-                    <div className="card">
-                      <header className="card-header">
-                        <p className="card-header-title">
-                          SMS au {records[0].Telephone} (1/
-                          {records.length})
-                        </p>
-                      </header>
-                      <pre className="card-content">{messageDemo}</pre>
-                      <footer className="card-footer">
-                        <p className="card-footer-item"></p>
-                        <p className="card-footer-item"></p>
-                      </footer>
-                    </div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-
                 <div className="field">
                   <label htmlFor="campaign" className="label">
                     Nom de la campagne d'envoi
@@ -202,7 +161,8 @@ export default function Campagne() {
                     />
                   </div>
                   <p className="help">
-                    Une campagne permet de regrouper les messages.
+                    Ce nom vous permettra d'accéder aux informations relatives à
+                    cet envoi sur votre téléphone portable.
                   </p>
                 </div>
 
@@ -215,45 +175,6 @@ export default function Campagne() {
                     >
                       Envoyer {records?.length} SMS
                     </button>
-                  </div>
-                </div>
-
-                <progress
-                  className="field progress"
-                  value={sentCount}
-                  max={records?.length}
-                >
-                  {sentCount}/{records?.length}
-                </progress>
-
-                <div className="field">
-                  <div className="card">
-                    <button
-                      className="card-header"
-                      onClick={() => setShowDetails(!showDetails)}
-                    >
-                      <div className="card-header-title">Données brutes</div>
-                      <div className="card-header-icon">
-                        <span className="icon">
-                          <i aria-hidden="true">+/-</i>
-                        </span>
-                      </div>
-                    </button>
-                    {showDetails ? (
-                      <>
-                        <pre className="card-content">
-                          {records?.length
-                            ? JSON.stringify(records[0], null, 2)
-                            : ""}
-                        </pre>
-                        <footer className="card-footer">
-                          <p className="card-footer-item"></p>
-                          <p className="card-footer-item"></p>
-                        </footer>
-                      </>
-                    ) : (
-                      <></>
-                    )}
                   </div>
                 </div>
               </div>
