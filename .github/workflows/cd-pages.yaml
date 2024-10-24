@@ -25,8 +25,8 @@ jobs:
           npm run build
           touch out/.nojekyll
         env:
-          NEXT_PUBLIC_SUPABASE_URL: https://gxtooxtkkcpblccexeyl.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4dG9veHRra2NwYmxjY2V4ZXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU5NzY2NTgsImV4cCI6MjA0MTU1MjY1OH0.Df1YgGW3JT7en1bM5bHhcjuI81pVsw2UJ6WIur11INA
+          NEXT_PUBLIC_SUPABASE_URL: https://gytkhixdulljndwfiduz.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5dGtoaXhkdWxsam5kd2ZpZHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2NzUzNDIsImV4cCI6MjA0NTI1MTM0Mn0.Y1OiujK1MgR5ZWC_N04TWKvu6Bj6HLfSqsuW8LWEy5g
 
       - name: Export build
         uses: actions/upload-pages-artifact@v1
