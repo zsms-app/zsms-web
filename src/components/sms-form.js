@@ -35,6 +35,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         response = await send(supabase, {
           message,
           phoneNumber,
+          campaignName,
           campaignId: campaign.id,
         });
       } else {
@@ -43,6 +44,7 @@ export function SMSForm({ supabase, onSent, showSimpleOnly }) {
         response = await send(supabase, {
           message,
           phoneNumber,
+          campaignName,
           campaignId: c.id,
         });
       }

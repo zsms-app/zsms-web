@@ -34,6 +34,7 @@ Deno.serve(async (req) => {
     .from("fcm_tokens")
     .select("*")
     .eq("id", pairingResult.data[0].fcm_token_id);
+  const token = tokenResult.data[0].token;
 
   const campaignResult = await supabaseClient
     .from("campaigns")
@@ -44,13 +45,13 @@ Deno.serve(async (req) => {
       size: data.phoneNumbers.length,
     })
     .select();
+  const campaign = campaignResult.data[0].id;
 
-  const token = tokenResult.data[0].token;
   const result = await messaging.send({
     data: {
       ...data,
       phoneNumbers: data.phoneNumbers.join("\n"),
-      campaignId: campaignResult.data[0].id,
+      campaignId: campaign,
       type: "campaign",
     },
     token,
@@ -66,7 +67,7 @@ Deno.serve(async (req) => {
     firebase_id: `campaign@${result}`,
     encoding_name: msg.encodingName,
     segment_count: msg.segments.length,
-    campaign_id: campaignResult.data[O].id,
+    campaign_id: campaign,
   });
 
   return new Response(JSON.stringify({ result }), {
