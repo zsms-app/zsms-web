@@ -84,6 +84,7 @@ export default function Grist() {
         const response = await send(supabase, {
           message,
           phoneNumber: record.Telephone,
+          campaignName,
           campaignId,
         });
         const { result } = await response.json();
