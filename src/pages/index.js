@@ -99,6 +99,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Debug>
+        <a href="/app-release.apk">APK</a>
+      </Debug>
     </>
   );
 }
