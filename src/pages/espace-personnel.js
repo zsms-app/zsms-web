@@ -5,7 +5,6 @@ import { createClient } from "@supabase/supabase-js";
 
 import { Header } from "@/components/header.js";
 import { OnboardingFlow } from "@/components/onboarding/flow.js";
-import { Notification } from "@/components/onboarding/notification.js";
 import { MockPhone } from "@/components/onboarding/mock-phone.js";
 import { SMSForm } from "@/components/sms-form.js";
 import { Debug } from "@/components/debug.js";
