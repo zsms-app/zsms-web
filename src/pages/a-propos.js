@@ -11,8 +11,8 @@ export default function APropos() {
           <p>
             zSMS est né d'un besoin personnel d'envoyer des SMS depuis un
             ordinateur plutôt que depuis un téléphone portable. Principalement
-            utilisateur de Signal, quelques ami.es restent sur des applications
-            de GAFA et pour échanger avec eux je passe par des SMS.
+            utilisateur de Signal, quelques ami·es restent sur des applications
+            de GAFAM et pour échanger avec elles et eux je passe par des SMS.
           </p>
         </div>
       </section>
@@ -23,7 +23,7 @@ export default function APropos() {
             <li>Responsable de la publication : Thomas Guillet</li>
             <li>Contact : contact@zsms.fr</li>
             <li>
-              Hébergement : Supabase chez AWS - <i>East US (North Virginia)</i>
+              Hébergement : Supabase chez AWS - <i>West EU (Paris)</i>
             </li>
           </ul>
         </div>
@@ -38,8 +38,8 @@ export default function APropos() {
             <p>Thomas Guillet</p>
             <h3>Finalité du traitement</h3>
             <p>
-              Le traitement des données personnelles est nécessaire à l'envoi
-              des SMS depuis le navigateur internet.
+              Le traitement de données personnelles est nécessaire à l'envoi des
+              SMS depuis le navigateur internet.
             </p>
             <h3>Exercice des droits relatifs aux données personnelles</h3>
             <p>
@@ -97,8 +97,9 @@ export default function APropos() {
             <h3>Transfert en dehors de l'Union européenne</h3>
             <p>
               Pour le bon fonctionnement de l'application, les données passent
-              par l'infrastructure de Supabase hébergée chez AWS (Amazon) aux
-              États-Unis, en particulier <i>East US (North Virginia)</i>.
+              par l'infrastructure de Supabase hébergée chez AWS (Amazon) une
+              entreprise américaines mais les données sont hébergées en France{" "}
+              <i>West EU (Paris)</i>.
             </p>
           </div>
         </div>
