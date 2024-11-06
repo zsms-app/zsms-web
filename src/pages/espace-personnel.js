@@ -15,14 +15,6 @@ export default function EspacePersonnel() {
   const [supabase, setSupabase] = useState();
 
   const [user, setUser] = useState();
-
-  async function createUser(supabase) {
-    const { data, error } = await supabase.auth.signInAnonymously({
-      options: { data: { source: "web" } },
-    });
-    setUser(data?.session?.user);
-  }
-
   useEffect(() => {
     const supabaseClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -36,9 +28,8 @@ export default function EspacePersonnel() {
         console.log(error);
       }
       setUser(data?.session?.user);
-
       if (!data?.session?.user) {
-        createUser(supabaseClient);
+        router.push("/connexion");
       }
     }
     getUser();
@@ -54,6 +45,18 @@ export default function EspacePersonnel() {
     router.push("/");
   }
 
+  const [checkOk, setCheckOk] = useState(false);
+
+  async function checkToken() {
+    const { data, error } = await supabase.from("fcm_tokens").select("*");
+    if (error) {
+      console.log(error);
+    }
+    if (data.length) {
+      setCheckOk(true);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -61,7 +64,10 @@ export default function EspacePersonnel() {
         <>Chargement en cours…</>
       ) : (
         <LoggedInView supabase={supabase} onLogout={onLogout}>
-          {user?.user_metadata.onboardingFinished ? (
+          <button className="button" onClick={checkToken}>
+            Check
+          </button>
+          {checkOk || user?.user_metadata.onboardingFinished ? (
             <>
               <section className="section">
                 <div className="container">

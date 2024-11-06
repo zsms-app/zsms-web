@@ -52,15 +52,11 @@ export default function Campagne() {
       <Header />
       {user ? (
         <LoggedInView supabase={supabase} onLogout={onLogout}>
-          {user.user_metadata.onboardingFinished ? (
-            <section className="section">
-              <div className="container">
-                <SMSForm supabase={supabase} />
-              </div>
-            </section>
-          ) : (
-            <></>
-          )}
+          <section className="section">
+            <div className="container">
+              <SMSForm supabase={supabase} />
+            </div>
+          </section>
         </LoggedInView>
       ) : (
         <></>

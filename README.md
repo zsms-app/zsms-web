@@ -4,6 +4,8 @@ https://docs.docker.com/desktop/install/linux/ubuntu/
 
 `sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0`
 
+`systemctl --user start docker-desktop`
+
 ### Lancement de la stack Supabase
 
 `./node_modules/.bin/supabase start` (stop)

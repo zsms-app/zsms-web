@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 export function LoggedInView({ supabase, onLogout, children }) {
-  const [showLogoutDetails, setShowLogoutDetails] = useState(false);
-
   async function logoutUser() {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -11,8 +9,6 @@ export function LoggedInView({ supabase, onLogout, children }) {
     if (onLogout) {
       onLogout();
     }
-
-    setShowLogoutDetails(false);
   }
 
   return (
@@ -25,38 +21,12 @@ export function LoggedInView({ supabase, onLogout, children }) {
               <div className="control">
                 <button
                   className="button is-warning"
-                  onClick={() => setShowLogoutDetails(!showLogoutDetails)}
+                  onClick={() => logoutUser()}
                 >
                   Se déconnecter
                 </button>
               </div>
             </div>
-            {showLogoutDetails && (
-              <>
-                <div className="notification">
-                  En vous déconnectant,{" "}
-                  <b>toutes les informations seront supprimées</b> de votre
-                  navigateur. Il faudra <b>configurer à nouveau</b> un téléphone
-                  pour envoyer des SMS.
-                </div>
-
-                <div className="field is-grouped">
-                  <div className="control">
-                    <button className="button" onClick={() => logoutUser()}>
-                      Confirmer la déconnexion
-                    </button>
-                  </div>
-                  <div className="control">
-                    <button
-                      className="button is-danger"
-                      onClick={() => setShowLogoutDetails(!showLogoutDetails)}
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
           </div>
         </div>
       </section>

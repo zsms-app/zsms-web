@@ -7,7 +7,7 @@ export function MessageInputControl({ value, onChange, onCtrlEnter }) {
     const maxBitsInSegment = 1120; // max size of a SMS is 140 octets -> 140 * 8bits = 1120 bits
     return (
       <p className="help">
-        <div className="messageSegments">
+        <span className="messageSegments">
           {v.segments.map((segment, i) => (
             <progress
               key={i}
@@ -18,7 +18,7 @@ export function MessageInputControl({ value, onChange, onCtrlEnter }) {
               {segment.sizeInBits()}/{maxBitsInSegment}
             </progress>
           ))}
-        </div>
+        </span>
         {v.segments.length > 1
           ? `Ce message sera réparti sur ${v.segments.length} segments SMS.`
           : ""}

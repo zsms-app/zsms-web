@@ -115,76 +115,69 @@ export default function Campagne() {
       </section>
       {user ? (
         <LoggedInView supabase={supabase} onLogout={onLogout}>
-          {user.user_metadata.onboardingFinished ? (
-            <section className="section">
-              <div className="container">
-                <div className="columns">
-                  <div className="column">
-                    <div className="field">
-                      <label htmlFor="phoneList" className="label">
-                        Liste des numéros de téléphone
-                      </label>
-                      <div className="control">
-                        <textarea
-                          className="textarea"
-                          id="phoneList"
-                          rows="5"
-                          value={phoneListText}
-                          onChange={(e) => setPhoneListText(e.target.value)}
-                        />
-                      </div>
-                      <p className="help">Un numéro de téléphone par ligne</p>
-                    </div>
-                  </div>
-                  <div className="column">
-                    <div className="field">
-                      <label htmlFor="template" className="label">
-                        Message
-                      </label>
-                      <MessageInputControl
-                        value={messageTemplate}
-                        onChange={(e) => updateTemplate(e.target.value)}
+          <section className="section">
+            <div className="container">
+              <div className="columns">
+                <div className="column">
+                  <div className="field">
+                    <label htmlFor="phoneList" className="label">
+                      Liste des numéros de téléphone
+                    </label>
+                    <div className="control">
+                      <textarea
+                        className="textarea"
+                        id="phoneList"
+                        rows="5"
+                        value={phoneListText}
+                        onChange={(e) => setPhoneListText(e.target.value)}
                       />
                     </div>
+                    <p className="help">Un numéro de téléphone par ligne</p>
                   </div>
                 </div>
-                <div className="field">
-                  <label htmlFor="campaign" className="label">
-                    Nom de la campagne d'envoi
-                  </label>
-                  <div className="control">
-                    <input
-                      id="campaign"
-                      className="input"
-                      value={campaignName}
-                      onChange={(e) => setCampaignName(e.target.value)}
+                <div className="column">
+                  <div className="field">
+                    <label htmlFor="template" className="label">
+                      Message
+                    </label>
+                    <MessageInputControl
+                      value={messageTemplate}
+                      onChange={(e) => updateTemplate(e.target.value)}
                     />
-                  </div>
-                  <p className="help">
-                    Ce nom vous permettra d'accéder aux informations relatives à
-                    cet envoi sur votre téléphone portable.
-                  </p>
-                </div>
-
-                <div className="field">
-                  <div className="control">
-                    <button
-                      disabled={sending}
-                      className="button"
-                      onClick={() => sendSMSs()}
-                    >
-                      Envoyer {records?.length} SMS
-                    </button>
                   </div>
                 </div>
               </div>
-            </section>
-          ) : (
-            <OnboardingFlow
-              supabase={supabase}
-              onOnboardingFinished={onOnboardingFinished}
-            />
-          )}
+              <div className="field">
+                <label htmlFor="campaign" className="label">
+                  Nom de la campagne d'envoi
+                </label>
+                <div className="control">
+                  <input
+                    id="campaign"
+                    className="input"
+                    value={campaignName}
+                    onChange={(e) => setCampaignName(e.target.value)}
+                  />
+                </div>
+                <p className="help">
+                  Ce nom vous permettra d'accéder aux informations relatives à
+                  cet envoi sur votre téléphone portable.
+                </p>
+              </div>
+
+              <div className="field">
+                <div className="control">
+                  <button
+                    disabled={sending}
+                    className="button"
+                    onClick={() => sendSMSs()}
+                  >
+                    Envoyer {records?.length} SMS
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
         </LoggedInView>
       ) : starting ? (
         <>Chargement en cours…</>
