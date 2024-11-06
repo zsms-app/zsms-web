@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "fr.cel.zsms",
+      "sha256_cert_fingerprints": [
+        "3B:4F:1D:74:F8:3E:C6:5C:12:62:80:07:01:E3:00:82:E7:16:2D:09:E1:80:E5:02:1F:E4:BC:97:03:80:58:93"
+      ]
+    }
+  }
+]
