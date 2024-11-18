@@ -21,7 +21,8 @@ export default function Home() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: "http://localhost:3000/retour",
+        emailRedirectTo:
+          process.env.NEXT_PUBLIC_RETURN ?? "https://zsms.fr/retour",
       },
     });
     console.log({ data, error });
