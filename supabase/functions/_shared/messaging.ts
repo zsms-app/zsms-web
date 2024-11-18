@@ -3,7 +3,7 @@ import { getMessaging, AndroidConfig } from "npm:firebase-admin/messaging";
 
 const app = initializeApp({
   credential: cert({
-    project_id: Deno.env.get("GOOGLE_APPLICATION_PROJECT_ID"),
+    projectId: Deno.env.get("GOOGLE_APPLICATION_PROJECT_ID"),
     clientEmail: Deno.env.get("GOOGLE_APPLICATION_CLIENT_EMAIL"),
     privateKey: Deno.env.get("GOOGLE_APPLICATION_PRIVATE_KEY"),
   }),
