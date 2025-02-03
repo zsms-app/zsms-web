@@ -45,6 +45,7 @@ export default function EspacePersonnel() {
     router.push("/");
   }
 
+  const [message, setMessage] = useState("");
   const [checkOk, setCheckOk] = useState(false);
 
   async function checkToken() {
@@ -53,7 +54,12 @@ export default function EspacePersonnel() {
       console.log(error);
     }
     if (data.length) {
+      setMessage("");
       setCheckOk(true);
+    } else {
+      setMessage(
+        "Aucun téléphone n'est relié à votre compte pour le moment. Veuillez vérifier l'installation de l'application sur votre téléphone.",
+      );
     }
   }
 
@@ -64,9 +70,16 @@ export default function EspacePersonnel() {
         <>Chargement en cours…</>
       ) : (
         <LoggedInView supabase={supabase} onLogout={onLogout}>
-          <button className="button" onClick={checkToken}>
-            Check
-          </button>
+          <section className="section">
+            <div className="container">
+              <button className="button" onClick={checkToken}>
+                Vérifier la connexion à un téléphone
+              </button>
+            </div>
+          </section>
+          <section className="section">
+            <div className="container">{message}</div>
+          </section>
           {checkOk || user?.user_metadata.onboardingFinished ? (
             <>
               <section className="section">
@@ -114,15 +127,7 @@ export default function EspacePersonnel() {
               </section>
             </>
           ) : (
-            <>
-              <OnboardingFlow
-                supabase={supabase}
-                onOnboardingFinished={onOnboardingFinished}
-              />
-              <Debug>
-                <MockPhone supabase={supabase} />
-              </Debug>
-            </>
+            <></>
           )}
         </LoggedInView>
       )}
