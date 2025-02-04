@@ -29,7 +29,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5dGtoaXhkdWxsam5kd2ZpZHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2NzUzNDIsImV4cCI6MjA0NTI1MTM0Mn0.Y1OiujK1MgR5ZWC_N04TWKvu6Bj6HLfSqsuW8LWEy5g
 
       - name: Export build
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./out
   deploy:
